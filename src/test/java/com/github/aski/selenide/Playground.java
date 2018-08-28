@@ -12,10 +12,16 @@ public class Playground {
     public void test() {
         // navigate to the login page
         LoginPage loginPage = to(LoginPage.class);
+
+        loginPage.username().shouldBe(focused);
+        loginPage.loginButton().shouldBe(disabled);
+
         loginPage
                 .username("foo")
-                .password("bar")
-                .submit();
+                .password("bar");
+
+        loginPage.loginButton().shouldBe(enabled);
+        loginPage.loginButton().click();
 
         // login should have been successful and we should have
         // been redirected to the landing page
