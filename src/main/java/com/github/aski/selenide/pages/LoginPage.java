@@ -1,5 +1,8 @@
 package com.github.aski.selenide.pages;
 
+import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.Selenide;
+import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverRunner;
 import com.github.aski.selenide.Page;
 import com.github.aski.selenide.modules.Button;
@@ -12,9 +15,23 @@ import static com.codeborne.selenide.Selenide.$;
 
 public class LoginPage implements Page {
 
-    private final TextField username = new TextField(By.id("username"));
-    private final TextField password = new TextField(By.id("password"));
-    private final Button<LandingPage> button = new Button<>(By.id("login"), LandingPage.class);
+    private final TextField username = new TextField(() -> $(By.id("username")));
+    private final TextField password = new TextField(() -> $(By.id("password")));
+
+    private final TextField complicated = new TextField(() ->
+            $(By.id("foo")).$$(By.tagName("input")).find(Condition.text("Hello")));
+
+    private final TextField complicated2 = new TextField(() -> {
+        // find an element with id 'container', look for a label in there and get its 'for' attribute
+        // which is another element 'id'.
+        String id = $(By.id("container")).$(By.tagName("label")).getAttribute("for");
+        // get that other element and return it
+        return $(By.id(id));
+    });
+
+
+
+    private final Button<LandingPage> button = new Button<>(() -> $(By.id("login")), LandingPage.class);
 
     public TextField username() {
         return username;

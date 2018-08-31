@@ -1,41 +1,42 @@
 package com.github.aski.selenide;
 
 import com.codeborne.selenide.Condition;
-import org.openqa.selenium.By;
-
+import com.codeborne.selenide.SelenideElement;
+import java.util.function.Supplier;
 import static com.codeborne.selenide.Selenide.$;
 
-public class AbstractPageModule {
-    protected final By selector;
+public abstract class AbstractPageModule {
+    protected final Supplier<SelenideElement> selector;
 
-    public AbstractPageModule(By selector) {
+    public AbstractPageModule(Supplier<SelenideElement> selector) {
         this.selector = selector;
+
     }
 
     public final void should(Condition... conditions) {
-        $(selector).should(conditions);
+        $(selector.get()).should(conditions);
     }
 
     public final void shouldBe(Condition... conditions) {
-        $(selector).shouldBe(conditions);
+        selector.get().shouldBe(conditions);
 
     }
 
     public final void shouldHave(Condition... conditions) {
-        $(selector).shouldHave(conditions);
+        selector.get().shouldHave(conditions);
 
     }
 
     public final void shouldNot(Condition... conditions) {
-        $(selector).shouldNot(conditions);
+        selector.get().shouldNot(conditions);
     }
 
     public final void shouldNotBe(Condition... conditions) {
-        $(selector).shouldNotBe(conditions);
+        selector.get().shouldNotBe(conditions);
 
     }
 
     public final void shouldNotHave(Condition... conditions) {
-        $(selector).shouldNotHave(conditions);
+        selector.get().shouldNotHave(conditions);
     }
 }
